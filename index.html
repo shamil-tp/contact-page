@@ -1,10 +1,61 @@
-<!doctype html>
+add<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Contact a developer." />
-  <title>Contact // Developer Portfolio</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contact Shamil TP (shamil-tp) — Direct Message Terminal</title>
+  <meta name="description" content="Official direct contact portal for Shamil TP (shamil-tp). Send a direct message for software engineering inquiries, development projects, or technical collaboration.">
+  <meta name="keywords" content="Shamil TP, shamil tp, shamil-tp, Shamil, contact Shamil TP, Shamil TP email, Shamil TP contact">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://contact.shamiltp.me">
+
+  <meta property="og:title" content="Contact Shamil TP (shamil-tp) — Direct Message Terminal">
+  <meta property="og:description" content="Official direct contact portal for Shamil TP (shamil-tp). Send a direct message for software engineering inquiries, development projects, or technical collaboration.">
+  <meta property="og:url" content="https://contact.shamiltp.me">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Shamil TP Contact">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Contact Shamil TP (shamil-tp) — Direct Message Terminal">
+  <meta name="twitter:description" content="Official direct contact portal for Shamil TP (shamil-tp). Send a direct message for software engineering inquiries, development projects, or technical collaboration.">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Person",
+        "@id": "https://shamiltp.me/#person",
+        "name": "Shamil TP",
+        "alternateName": ["Shamil", "shamil-tp", "Shamil T P"],
+        "url": "https://shamiltp.me",
+        "sameAs": [
+          "https://github.com/shamiltp",
+          "https://www.linkedin.com/in/shamiltp",
+          "https://x.com/shamiltp"
+        ],
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "contactType": "Direct messaging via web contact form",
+          "url": "https://contact.shamiltp.me"
+        }
+      },
+      {
+        "@type": "ContactPage",
+        "@id": "https://contact.shamiltp.me/#contact-page",
+        "name": "Contact Shamil TP (shamil-tp)",
+        "url": "https://contact.shamiltp.me",
+        "description": "Official direct contact portal for Shamil TP (shamil-tp).",
+        "mainEntity": { "@id": "https://shamiltp.me/#person" },
+        "potentialAction": {
+          "@type": "CommunicateAction",
+          "name": "Send a direct message to Shamil TP",
+          "target": "https://contact.shamiltp.me/#contact-form"
+        }
+      }
+    ]
+  }
+  </script>
+
   <style>
     :root {
       color-scheme: dark;
@@ -17,18 +68,11 @@
       --pastel-green: #9acb9b;
     }
 
-    * {
-      box-sizing: border-box;
-      border-radius: 0;
-    }
-
-    html,
-    body {
-      min-height: 100%;
-      margin: 0;
-    }
+    * { box-sizing: border-box; border-radius: 0; }
+    html, body { min-height: 100%; margin: 0; }
 
     body {
+      min-width: 320px;
       min-height: 100vh;
       overflow-x: hidden;
       background: var(--terminal-deep);
@@ -38,39 +82,12 @@
       line-height: 1.45;
     }
 
-    button,
-    input,
-    textarea {
-      appearance: none;
-      -webkit-appearance: none;
-      border-radius: 0;
-      color: inherit;
-      font: inherit;
-    }
+    button, input, textarea { appearance: none; -webkit-appearance: none; border-radius: 0; color: inherit; font: inherit; }
+    button:focus, input:focus, textarea:focus { outline: none; }
+    ::selection { background: var(--ink); color: var(--terminal-deep); }
 
-    button:focus,
-    input:focus,
-    textarea:focus {
-      outline: none;
-    }
-
-    ::selection {
-      background: var(--ink);
-      color: var(--terminal-deep);
-    }
-
-    .shell {
-      width: min(100% - 32px, 760px);
-      margin: 0 auto;
-      padding: 48px 0;
-    }
-
-    .terminal {
-      overflow: hidden;
-      border: 2px solid var(--ink);
-      background: var(--terminal);
-      transition: max-width .25s ease, opacity .2s ease;
-    }
+    .shell { width: min(100% - 32px, 760px); margin: 0 auto; padding: 48px 0; }
+    .terminal { overflow: hidden; border: 2px solid var(--ink); background: var(--terminal); transition: box-shadow .35s ease; }
 
     .terminal__bar {
       display: flex;
@@ -84,13 +101,9 @@
       letter-spacing: .04em;
     }
 
-    .window-controls {
-      display: flex;
-      gap: 6px;
-    }
-
+    .window-controls { display: flex; gap: 6px; }
     .window-control {
-      display: grid;
+      display: block;
       width: 14px;
       height: 14px;
       min-height: 14px;
@@ -100,296 +113,105 @@
       box-shadow: none;
       cursor: pointer;
     }
-
-    .window-control:hover,
-    .window-control:focus-visible {
-      border-color: var(--ink);
-      outline: 1px solid var(--ink);
-      outline-offset: 2px;
-      box-shadow: none;
-    }
-
-    .window-control:active {
-      transform: none;
-      box-shadow: none;
-    }
-
+    .window-control:hover, .window-control:focus-visible { border-color: var(--ink); outline: 1px solid var(--ink); outline-offset: 2px; box-shadow: none; }
+    .window-control:active { transform: none; box-shadow: none; }
     .window-control--close { --control-color: var(--pastel-red); }
     .window-control--minimize { --control-color: var(--pastel-yellow); }
     .window-control--maximize { --control-color: var(--pastel-green); }
 
-    .terminal__body {
-      padding: clamp(24px, 5vw, 48px);
-    }
+    .terminal__body { min-height: 0; padding: clamp(24px, 5vw, 48px); transition: min-height .42s cubic-bezier(.2, .8, .2, 1); }
+    .prompt, .command { margin: 0; }
+    .prompt { font-size: 14px; }
+    .prompt::before, .command::before { content: "> "; }
 
-    .prompt,
-    .command {
-      margin: 0;
-    }
+    h1 { margin: 18px 0 10px; font-size: clamp(30px, 7vw, 56px); line-height: 1; letter-spacing: -.07em; text-transform: uppercase; }
+    .cursor { display: inline-block; width: .55em; height: .92em; margin-left: .12em; vertical-align: -.08em; background: var(--ink); animation: cursor-blink .9s steps(1, end) infinite; }
+    @keyframes cursor-blink { 0%, 48% { opacity: 1; } 49%, 100% { opacity: 0; } }
 
-    .prompt {
-      font-size: 14px;
-    }
+    .intro { max-width: 58ch; margin: 0 0 10px; }
+    .main-link { margin: 0 0 34px; font-size: 14px; }
+    a { color: inherit; text-underline-offset: .2em; }
+    a:hover, a:focus-visible { background: var(--ink); color: var(--terminal-deep); outline: none; }
+    .divider { height: 2px; margin: 28px 0; border: 0; background: var(--ink); }
 
-    .prompt::before,
-    .command::before {
-      content: "> ";
-    }
+    form { display: grid; max-height: 900px; gap: 22px; opacity: 1; overflow: hidden; transform: translateY(0) scaleY(1); transform-origin: top; transition: max-height .45s cubic-bezier(.2, .8, .2, 1), opacity .22s ease, transform .45s cubic-bezier(.2, .8, .2, 1), margin .45s ease; }
+    .field { display: grid; gap: 8px; }
+    label { font-size: 14px; font-weight: 700; text-transform: uppercase; }
+    label::before { content: "[ "; } label::after { content: " ]"; }
+    input, textarea { width: 100%; padding: 12px 14px; border: 2px solid var(--ink); background: var(--terminal-deep); caret-color: var(--ink); resize: vertical; }
+    input::placeholder, textarea::placeholder { color: var(--muted-ink); opacity: .75; }
+    input:focus, textarea:focus { background: var(--ink); color: var(--terminal-deep); box-shadow: 6px 6px 0 var(--muted-ink); }
+    input:focus::placeholder, textarea:focus::placeholder { color: var(--terminal-deep); opacity: .5; }
+    textarea { min-height: 150px; }
 
-    h1 {
-      margin: 18px 0 10px;
-      font-size: clamp(30px, 7vw, 56px);
-      line-height: 1;
-      letter-spacing: -.07em;
-      text-transform: uppercase;
-    }
+    .submit-row { display: flex; align-items: center; flex-wrap: wrap; gap: 14px; margin-top: 4px; }
+    .submit-button { min-height: 46px; padding: 10px 16px; border: 2px solid var(--ink); background: var(--ink); color: var(--terminal-deep); cursor: pointer; font-weight: 700; text-transform: uppercase; }
+    .submit-button:hover, .submit-button:focus-visible { background: var(--terminal-deep); color: var(--ink); outline: none; box-shadow: 5px 5px 0 var(--muted-ink); }
+    .submit-button:active { transform: translate(3px, 3px); box-shadow: 2px 2px 0 var(--muted-ink); }
+    .submit-button:disabled { cursor: wait; opacity: .6; }
+    .status { min-height: 1.5em; margin: 0; font-size: 14px; }
 
-    .cursor {
-      display: inline-block;
-      width: .55em;
-      height: .92em;
-      margin-left: .12em;
-      vertical-align: -.08em;
-      background: var(--ink);
-      animation: blink 1s steps(2, start) infinite;
-    }
+    .page-content, .footer { max-height: 480px; opacity: 1; overflow: hidden; transform: translateY(0) scaleY(1); transform-origin: top; transition: max-height .45s cubic-bezier(.2, .8, .2, 1), opacity .22s ease, transform .45s cubic-bezier(.2, .8, .2, 1), margin .45s ease, padding .45s ease, border-width .45s ease; }
+    .footer { display: flex; justify-content: space-between; gap: 16px; margin-top: 30px; padding-top: 20px; border-top: 2px solid var(--ink); font-size: 12px; text-transform: uppercase; }
 
-    @keyframes blink {
-      50% { opacity: 0; }
-    }
+    /* Yellow: content-only. Red: stripped-back form-only. Green: restore all. */
+    .terminal.is-minimized form { max-height: 0; margin: 0; opacity: 0; pointer-events: none; transform: translateY(-16px) scaleY(.94); }
+    .terminal.is-minimized .footer { margin-top: 2px; }
+    .terminal.is-closed .page-content, .terminal.is-closed .footer { max-height: 0; margin-top: 0; padding-top: 0; border-top-width: 0; opacity: 0; pointer-events: none; transform: translateY(-16px) scaleY(.94); }
+    .terminal.is-closed .terminal__body { display: grid; min-height: 300px; place-items: center stretch; }
+    .terminal.is-closed form { width: min(100%, 420px); margin: 0 auto; gap: 10px; }
+    .terminal.is-closed .field { gap: 0; }
+    .terminal.is-closed label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+    .terminal.is-closed input, .terminal.is-closed textarea { padding: 10px 12px; }
+    .terminal.is-closed textarea { min-height: 90px; }
+    .terminal.is-closed .submit-row { margin-top: 2px; }
 
-    .intro {
-      max-width: 58ch;
-      margin: 0 0 34px;
-    }
-
-    .divider {
-      height: 2px;
-      margin: 28px 0;
-      border: 0;
-      background: var(--ink);
-    }
-
-    form {
-      display: grid;
-      gap: 22px;
-    }
-
-    .field {
-      display: grid;
-      gap: 8px;
-    }
-
-    label {
-      font-size: 14px;
-      font-weight: 700;
-      text-transform: uppercase;
-    }
-
-    label::before {
-      content: "[ ";
-    }
-
-    label::after {
-      content: " ]";
-    }
-
-    input,
-    textarea {
-      width: 100%;
-      padding: 12px 14px;
-      border: 2px solid var(--ink);
-      background: var(--terminal-deep);
-      caret-color: var(--ink);
-      resize: vertical;
-    }
-
-    input::placeholder,
-    textarea::placeholder {
-      color: var(--muted-ink);
-      opacity: .5;
-    }
-
-    input:focus,
-    textarea:focus {
-      background: var(--ink);
-      color: var(--terminal-deep);
-      box-shadow: 6px 6px 0 var(--muted-ink);
-    }
-
-    input:focus::placeholder,
-    textarea:focus::placeholder {
-      color: var(--terminal-deep);
-      opacity: .5;
-    }
-
-    textarea {
-      min-height: 150px;
-    }
-
-    .submit-row {
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 14px;
-      margin-top: 4px;
-    }
-
-    button {
-      min-height: 46px;
-      padding: 10px 16px;
-      border: 2px solid var(--ink);
-      background: var(--ink);
-      color: var(--terminal-deep);
-      cursor: pointer;
-      font-weight: 700;
-      text-transform: uppercase;
-    }
-
-    button:hover,
-    button:focus-visible {
-      background: var(--terminal-deep);
-      color: var(--ink);
-      box-shadow: 5px 5px 0 var(--muted-ink);
-    }
-
-    button:active {
-      transform: translate(3px, 3px);
-      box-shadow: 2px 2px 0 var(--muted-ink);
-    }
-
-    button:disabled {
-      cursor: wait;
-      opacity: .6;
-    }
-
-    .status {
-      min-height: 1.5em;
-      margin: 0;
-      font-size: 14px;
-    }
-
-    .footer {
-      display: flex;
-      justify-content: space-between;
-      gap: 16px;
-      margin-top: 30px;
-      padding-top: 20px;
-      border-top: 2px solid var(--ink);
-      font-size: 12px;
-      text-transform: uppercase;
-    }
-
-    @media (max-width: 480px) {
-      .shell { width: min(100% - 20px, 760px); padding: 10px 0; }
-      .terminal__bar { font-size: 11px; }
-      .footer { flex-direction: column; gap: 4px; }
-    }
-
-    /* Window-control modes */
-    .terminal.is-minimized .terminal__body {
-      padding-block: clamp(24px, 5vw, 48px);
-    }
-
-    /* Yellow: show the page content, but remove the contact form entirely. */
-    .terminal.is-minimized form {
-      display: none;
-    }
-
-    /* Red: hide page content and reduce the form to its bare essentials. */
-    .terminal.is-closed .terminal__body {
-      display: grid;
-      min-height: 300px;
-      place-items: center stretch;
-    }
-
-    .terminal.is-closed .prompt,
-    .terminal.is-closed .command,
-    .terminal.is-closed h1,
-    .terminal.is-closed .intro,
-    .terminal.is-closed .divider,
-    .terminal.is-closed .footer {
-      display: none;
-    }
-
-    .terminal.is-closed form {
-      width: min(100%, 420px);
-      margin: 0 auto;
-      gap: 10px;
-    }
-
-    .terminal.is-closed .field {
-      gap: 0;
-    }
-
-    .terminal.is-closed label {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      overflow: hidden;
-      clip: rect(0 0 0 0);
-      white-space: nowrap;
-    }
-
-    .terminal.is-closed input,
-    .terminal.is-closed textarea {
-      padding: 10px 12px;
-    }
-
-    .terminal.is-closed textarea {
-      min-height: 90px;
-    }
-
-    .terminal.is-closed .submit-row {
-      margin-top: 2px;
-    }
+    @media (max-width: 480px) { .shell { width: min(100% - 20px, 760px); padding: 10px 0; } .terminal__bar { font-size: 11px; } .footer { flex-direction: column; gap: 4px; } }
   </style>
 </head>
 <body>
   <main class="shell">
     <section class="terminal" aria-labelledby="page-title">
       <div class="terminal__bar" aria-label="Terminal window header">
-        <span>guest@portfolio: ~/contact</span>
+        <span>shamil@contact: ~/direct-message</span>
         <div class="window-controls" aria-label="Window controls">
-          <button class="window-control window-control--close" type="button" aria-label="Close contact form" title="Close contact form"></button>
-          <button class="window-control window-control--minimize" type="button" aria-label="Minimize content" title="Minimize content"></button>
-          <button class="window-control window-control--maximize" type="button" aria-label="Restore full content" title="Restore full content"></button>
+          <button class="window-control window-control--close" type="button" aria-label="Show compact form" title="Show compact form"></button>
+          <button class="window-control window-control--minimize" type="button" aria-label="Show content only" title="Show content only"></button>
+          <button class="window-control window-control--maximize" type="button" aria-label="Restore full page" title="Restore full page"></button>
         </div>
       </div>
 
       <div class="terminal__body">
         <p class="prompt">cd ~/contact</p>
-        <p class="command">open contact-form</p>
-        <h1 id="page-title">Transmit<span class="cursor" aria-hidden="true"></span></h1>
-        <p class="intro">Have a project, opportunity, or strange idea? Leave a message below and I will get back to you.</p>
+        <p class="command">open direct-message-terminal</p>
+        <h1 id="page-title">Contact Shamil TP<span class="cursor" aria-hidden="true"></span></h1>
+        <p class="intro">Official contact node for Shamil TP (shamil-tp). Use the terminal interface below to reach out directly about software engineering, development projects, or technical collaboration.</p>
+        <p class="main-link"><a href="https://shamiltp.me">Main site: shamiltp.me</a></p>
 
-        <hr class="divider" />
+        <hr class="divider">
 
         <form id="contact-form">
           <div class="field">
             <label for="name">Name</label>
-            <input id="name" name="name" type="text" autocomplete="name" placeholder="YOUR_NAME" required />
+            <input id="name" name="name" type="text" autocomplete="name" placeholder="YOUR_NAME" required>
           </div>
-
           <div class="field">
             <label for="email">Email</label>
-            <input id="email" name="email" type="email" autocomplete="email" placeholder="YOU@EXAMPLE.COM" required />
+            <input id="email" name="email" type="email" autocomplete="email" placeholder="YOU@EXAMPLE.COM" required>
           </div>
-
           <div class="field">
             <label for="message">Message</label>
             <textarea id="message" name="message" placeholder="TYPE_MESSAGE_HERE..." required></textarea>
           </div>
-
           <div class="submit-row">
-            <button type="submit">[ Execute ]</button>
-            <p id="status" class="status" role="status" aria-live="polite"></p>
+            <button class="submit-button" type="submit">[ SEND MESSAGE ]</button>
+            <p id="form-status" class="status" role="status" aria-live="polite"></p>
           </div>
         </form>
 
         <footer class="footer">
+          <span>© <span id="year"></span> Shamil TP</span>
           <span>status: ready</span>
-          <span>secure uplink v1.0</span>
         </footer>
       </div>
     </section>
@@ -399,10 +221,13 @@
     const form = document.getElementById("contact-form");
     const terminal = document.querySelector(".terminal");
     const submitButton = form.querySelector('button[type="submit"]');
-    const status = document.getElementById("status");
+    const formStatus = document.getElementById("form-status");
+    const defaultLabel = "[ SEND MESSAGE ]";
     const closeButton = document.querySelector(".window-control--close");
     const minimizeButton = document.querySelector(".window-control--minimize");
     const maximizeButton = document.querySelector(".window-control--maximize");
+
+    document.getElementById("year").textContent = new Date().getFullYear();
 
     closeButton.addEventListener("click", () => {
       terminal.classList.remove("is-minimized");
@@ -420,37 +245,37 @@
 
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
+      if (!form.reportValidity()) return;
 
-      const name = document.getElementById("name").value.trim();
-      const email = document.getElementById("email").value.trim();
-      const message = document.getElementById("message").value.trim();
+      const payload = {
+        name: document.getElementById("name").value.trim(),
+        email: document.getElementById("email").value.trim(),
+        message: document.getElementById("message").value.trim()
+      };
 
       submitButton.disabled = true;
-      submitButton.textContent = "[ Transmitting... ]";
-      status.textContent = "Sending payload...";
+      submitButton.textContent = "[ TRANSMITTING... ]";
+      formStatus.textContent = "[ TRANSMITTING... ]";
 
       try {
         const response = await fetch("https://contact.shamiltp.me/api/contact", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name, email, message })
+          headers: { "Content-Type": "application/json", "Accept": "application/json" },
+          body: JSON.stringify(payload)
         });
 
-        if (response.ok) {
-          alert("Transmission complete. Your message has been sent.");
-          form.reset();
-          status.textContent = "Transmission complete.";
-        } else {
-          alert("Transmission failed. Please try again.");
-          status.textContent = "Error: server rejected the transmission.";
-        }
+        if (!response.ok) throw new Error("Contact endpoint rejected the request.");
+
+        form.reset();
+        formStatus.textContent = "[ MESSAGE SENT ]";
+        alert("Message sent successfully. Shamil TP will be in touch soon.");
       } catch (error) {
         console.error("Contact form submission failed:", error);
-        alert("Network error. Please check your connection and try again.");
-        status.textContent = "Error: network unavailable.";
+        formStatus.textContent = "[ TRANSMISSION FAILED — TRY AGAIN ]";
+        alert("Unable to send your message right now. Please try again shortly.");
       } finally {
         submitButton.disabled = false;
-        submitButton.textContent = "[ Execute ]";
+        submitButton.textContent = defaultLabel;
       }
     });
   </script>
