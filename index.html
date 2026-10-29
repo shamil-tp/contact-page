@@ -119,14 +119,18 @@
     .window-control--minimize { --control-color: var(--pastel-yellow); }
     .window-control--maximize { --control-color: var(--pastel-green); }
 
-    .terminal__body { padding: clamp(24px, 5vw, 48px); }
+    .terminal__body {
+      min-height: 0;
+      padding: clamp(24px, 5vw, 48px);
+      transition: min-height .6s cubic-bezier(.22, 1, .36, 1), padding .6s cubic-bezier(.22, 1, .36, 1);
+    }
     .prompt, .command { margin: 0; }
     .prompt { font-size: 14px; }
     .prompt::before, .command::before { content: "> "; }
 
     h1 { margin: 18px 0 10px; font-size: clamp(30px, 7vw, 56px); line-height: 1; letter-spacing: -.07em; text-transform: uppercase; }
-    .cursor { display: inline-block; width: .55em; height: .92em; margin-left: .12em; vertical-align: -.08em; background: var(--ink); animation: blink 1s steps(2, start) infinite; }
-    @keyframes blink { 50% { opacity: 0; } }
+    .cursor { display: inline-block; width: .55em; height: .92em; margin-left: .12em; vertical-align: -.08em; background: var(--ink); animation: cursor-blink .9s steps(1, end) infinite; }
+    @keyframes cursor-blink { 0%, 48% { opacity: 1; } 49%, 100% { opacity: 0; } }
 
     .intro { max-width: 58ch; margin: 0 0 10px; }
     .main-link { margin: 0 0 34px; font-size: 14px; }
@@ -134,7 +138,17 @@
     a:hover, a:focus-visible { background: var(--ink); color: var(--terminal-deep); outline: none; }
     .divider { height: 2px; margin: 28px 0; border: 0; background: var(--ink); }
 
-    form { display: grid; gap: 22px; }
+    form {
+      display: grid;
+      width: 100%;
+      max-height: 560px;
+      gap: 22px;
+      opacity: 1;
+      overflow: hidden;
+      transform: translateY(0) scaleY(1);
+      transform-origin: top;
+      transition: width .6s cubic-bezier(.22, 1, .36, 1), max-height .6s cubic-bezier(.22, 1, .36, 1), opacity .26s ease, transform .6s cubic-bezier(.22, 1, .36, 1), margin .6s cubic-bezier(.22, 1, .36, 1), gap .6s cubic-bezier(.22, 1, .36, 1);
+    }
     .field { display: grid; gap: 8px; }
     label { font-size: 14px; font-weight: 700; text-transform: uppercase; }
     label::before { content: "[ "; } label::after { content: " ]"; }
@@ -151,12 +165,21 @@
     .submit-button:disabled { cursor: wait; opacity: .6; }
     .status { min-height: 1.5em; margin: 0; font-size: 14px; }
 
-    .footer { display: flex; justify-content: space-between; gap: 16px; margin-top: 30px; padding-top: 20px; border-top: 2px solid var(--ink); font-size: 12px; text-transform: uppercase; }
+    .page-content, .footer {
+      opacity: 1;
+      overflow: hidden;
+      transform: translateY(0) scaleY(1);
+      transform-origin: top;
+      transition: max-height .6s cubic-bezier(.22, 1, .36, 1), opacity .26s ease, transform .6s cubic-bezier(.22, 1, .36, 1), margin .6s cubic-bezier(.22, 1, .36, 1), padding .6s cubic-bezier(.22, 1, .36, 1), border-width .6s cubic-bezier(.22, 1, .36, 1);
+    }
+    .page-content { max-height: 360px; }
+    .footer { display: flex; max-height: 64px; justify-content: space-between; gap: 16px; margin-top: 30px; padding-top: 20px; border-top: 2px solid var(--ink); font-size: 12px; text-transform: uppercase; }
 
     /* Yellow: content-only. Red: stripped-back form-only. Green: restore all. */
-    .terminal.is-minimized form { display: none; }
-    .terminal.is-closed .prompt, .terminal.is-closed .command, .terminal.is-closed h1, .terminal.is-closed .intro, .terminal.is-closed .main-link, .terminal.is-closed .divider, .terminal.is-closed .footer { display: none; }
-    .terminal.is-closed .terminal__body { display: grid; min-height: 300px; place-items: center stretch; }
+    .terminal.is-minimized form { max-height: 0; margin: 0; opacity: 0; pointer-events: none; transform: translateY(-10px) scaleY(.97); }
+    .terminal.is-minimized .footer { margin-top: 2px; }
+    .terminal.is-closed .page-content, .terminal.is-closed .footer { max-height: 0; margin-top: 0; padding-top: 0; border-top-width: 0; opacity: 0; pointer-events: none; transform: translateY(-10px) scaleY(.97); }
+    .terminal.is-closed .terminal__body { min-height: 300px; }
     .terminal.is-closed form { width: min(100%, 420px); margin: 0 auto; gap: 10px; }
     .terminal.is-closed .field { gap: 0; }
     .terminal.is-closed label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
@@ -165,7 +188,6 @@
     .terminal.is-closed .submit-row { margin-top: 2px; }
 
     @media (max-width: 480px) { .shell { width: min(100% - 20px, 760px); padding: 10px 0; } .terminal__bar { font-size: 11px; } .footer { flex-direction: column; gap: 4px; } }
-    @media (prefers-reduced-motion: reduce) { .cursor { animation: none; } }
   </style>
 </head>
 <body>
@@ -181,13 +203,15 @@
       </div>
 
       <div class="terminal__body">
-        <p class="prompt">cd ~/contact</p>
-        <p class="command">open direct-message-terminal</p>
-        <h1 id="page-title">Contact Shamil TP<span class="cursor" aria-hidden="true"></span></h1>
-        <p class="intro">Official contact node for Shamil TP (shamil-tp). Use the terminal interface below to reach out directly about software engineering, development projects, or technical collaboration.</p>
-        <p class="main-link"><a href="https://shamiltp.me">Main site: shamiltp.me</a></p>
+        <div class="page-content">
+          <p class="prompt">cd ~/contact</p>
+          <p class="command">open direct-message-terminal</p>
+          <h1 id="page-title">Contact Shamil TP<span class="cursor" aria-hidden="true"></span></h1>
+          <p class="intro">Official contact node for Shamil TP (shamil-tp). Use the terminal interface below to reach out directly about software engineering, development projects, or technical collaboration.</p>
+          <p class="main-link"><a href="https://shamiltp.me">Main site: shamiltp.me</a></p>
 
-        <hr class="divider">
+          <hr class="divider">
+        </div>
 
         <form id="contact-form">
           <div class="field">
